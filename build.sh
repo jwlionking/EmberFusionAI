@@ -84,7 +84,11 @@ configure_project() {
     case $choice in
         1) prefix="i686-pc-linux-gnu";;
         2) prefix="x86_64-pc-linux-gnu";;
-        3) prefix="x86_64-w64-mingw32";;
+        3) 
+            prefix="x86_64-w64-mingw32"
+            echo 1 | sudo update-alternatives --config x86_64-w64-mingw32-gcc
+            echo 1 | sudo update-alternatives --config x86_64-w64-mingw32-g++
+            ;;
         4) prefix="x86_64-apple-darwin19";;
         5) prefix="arm-linux-gnueabihf";;
         6) prefix="aarch64-linux-gnu";;
