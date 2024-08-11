@@ -48,6 +48,14 @@ packages=(
     "libboost-all-dev"
     "libevent-dev"
     "libboost-filesystem-dev"
+    "qt5-default"
+    "qttools5-dev-tools"
+    "libqt5core5a"
+    "libqt5gui5"
+    "libqt5dbus5"
+    "libqt5network5"
+    "libqt5widgets5"
+    "qttools5-dev"
 )
 
 # Function to check and install missing packages
@@ -118,8 +126,8 @@ configure_project() {
     sudo apt-get update -y
     sudo apt-get install -y libdb4.8-dev libdb4.8++-dev
 
-    # Configure the project with CONFIG_SITE, Boost, and libevent settings
-    echo -e "${CYAN}Configuring with Berkeley DB 4.8, Boost, and libevent...${NC}"
+    # Configure the project with CONFIG_SITE, Boost, libevent, and Qt5 settings
+    echo -e "${CYAN}Configuring with Berkeley DB 4.8, Boost, libevent, and Qt5...${NC}"
     CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure \
         CPPFLAGS="-I/usr/include/db4.8 -I/usr/include/boost" \
         LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
