@@ -45,6 +45,8 @@ packages=(
     "libgmp-dev"
     "libdb4.8-dev"
     "libdb4.8++-dev"
+    "libboost-all-dev"
+    "libevent-dev"
 )
 
 # Function to check and install missing packages
@@ -115,11 +117,12 @@ configure_project() {
     sudo apt-get update -y
     sudo apt-get install -y libdb4.8-dev libdb4.8++-dev
 
-    # Configure the project with CONFIG_SITE and force use of Berkeley DB 4.8
-    echo -e "${CYAN}Configuring with Berkeley DB 4.8...${NC}"
+    # Configure the project with CONFIG_SITE, Boost, and libevent settings
+    echo -e "${CYAN}Configuring with Berkeley DB 4.8, Boost, and libevent...${NC}"
     CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure \
-        CPPFLAGS="-I/usr/include/db4.8" \
+        CPPFLAGS="-I/usr/include/db4.8 -I/usr/include" \
         LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
+        --with-boost=/usr/include \
         --disable-bench \
         --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
 
