@@ -129,11 +129,11 @@ configure_project() {
     # Configure the project with CONFIG_SITE, Boost, libevent, and Qt5 settings
     echo -e "${CYAN}Configuring with Berkeley DB 4.8, Boost, libevent, and Qt5...${NC}"
     CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure \
-        CPPFLAGS="-I/usr/include/db4.8 -I/usr/include/boost" \
+        CPPFLAGS="-I/usr/include/db4.8" \
         LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
         BOOST_CPPFLAGS="-I/usr/include" \
         BOOST_LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
-        --with-boost=/usr/include \
+        --with-boost=/usr \
         --disable-bench \
         --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
 
