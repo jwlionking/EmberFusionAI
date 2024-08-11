@@ -1,7 +1,5 @@
 #!/bin/bash
 
-clear
-
 # Define colors
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -12,13 +10,10 @@ NC='\033[0m' # No Color
 # ASCII Art Header for EFUS
 show_header() {
     echo -e "${YELLOW}"
-    echo "┏┓┳┳┓┳┓┏┓┳┓┏┓┳┳┏┓┳┏┓┳┓┏┓┳"
-    echo "┣ ┃┃┃┣┫┣ ┣┫┣ ┃┃┗┓┃┃┃┃┃┣┫┃"
-    echo "┗┛┛ ┗┻┛┗┛┛┗┻ ┗┛┗┛┻┗┛┛┗┛┗┻"
-    echo "┳┓┳┳┳┓ ┳┓  ┳┳┓┏┓┳┓┳┳     "
-    echo "┣┫┃┃┃┃ ┃┃  ┃┃┃┣ ┃┃┃┃     "
-    echo "┻┛┗┛┻┗┛┻┛  ┛ ┗┗┛┛┗┗┛     "
-    echo "                         "
+    echo "┏┓┏┓┳┳┏┓  ┳┓┳┳┳┓ ┳┓  ┳┳┓┏┓┳┓┳┳"
+    echo "┣ ┣ ┃┃┗┓  ┣┫┃┃┃┃ ┃┃  ┃┃┃┣ ┃┃┃┃"
+    echo "┗┛┻ ┗┛┗┛  ┻┛┗┛┻┗┛┻┛  ┛ ┗┗┛┛┗┗┛"
+    echo "                              "
     echo -e "${NC}"
 }
 
@@ -46,6 +41,8 @@ packages=(
     "g++-mingw-w64-x86-64"
     "mingw-w64-x86-64-dev"
     "libgmp-dev"
+    "libdb4.8-dev"
+    "libdb4.8++"
 )
 
 # Function to check and install missing packages
@@ -102,29 +99,15 @@ configure_project() {
     make -j$(nproc) || { echo -e "${RED}Failed to build dependencies${NC}"; exit 1; }
     cd .. || { echo -e "${RED}Failed to change back to parent directory${NC}"; exit 1; }
 
-    # Ensure you are in the root directory where configure script is located
-    if [ ! -f "./configure" ]; then
-        echo -e "${YELLOW}No configure script found. Running './autogen.sh' to generate it.${NC}"
-        ./autogen.sh || { echo -e "${RED}Failed to run './autogen.sh'${NC}"; exit 1; }
-    fi
-
-    # Check if Berkeley DB 4.8 is already installed
-    BDB_PREFIX=$(pwd)/db4
-    if [ -f "${BDB_PREFIX}/lib/libdb_cxx-4.8.so" ] || [ -f "${BDB_PREFIX}/lib/libdb_cxx-4.8.a" ]; then
-        echo -e "${GREEN}Berkeley DB 4.8 is already installed.${NC}"
-    else
-        # Install Berkeley DB 4.8 if not installed
-        echo -e "${CYAN}Installing Berkeley DB 4.8...${NC}"
-        ./contrib/install_db4.sh `pwd` || { echo -e "${RED}Failed to install Berkeley DB 4.8${NC}"; exit 1; }
-    fi
-
-    # Set environment variables to use Berkeley DB 4.8
-    export BDB_CFLAGS="-I${BDB_PREFIX}/include -I${BDB_PREFIX}/include/db4"
-    export BDB_LIBS="-L${BDB_PREFIX}/lib -ldb_cxx-4.8"
+    # Add the Bitcoin PPA for Berkeley DB 4.8 and install it
+    echo -e "${CYAN}Adding Bitcoin PPA and installing Berkeley DB 4.8...${NC}"
+    sudo add-apt-repository -y ppa:bitcoin/bitcoin
+    sudo apt-get update -y
+    sudo apt-get install -y libdb4.8-dev libdb4.8++
 
     # Configure the project with CONFIG_SITE and force use of Berkeley DB 4.8
     CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure --prefix=/ --disable-bench --disable-tests \
-        BDB_CFLAGS="$BDB_CFLAGS" BDB_LIBS="$BDB_LIBS" || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
+        BDB_CFLAGS="-I/usr/include" BDB_LIBS="-L/usr/lib -ldb_cxx-4.8" || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
     make -j$(nproc) || { echo -e "${RED}Failed to build the project${NC}"; exit 1; }
     
     echo -e "${GREEN}Build completed successfully for ${YELLOW}$prefix${GREEN}!${NC}"
