@@ -1,0 +1,33 @@
+# /etc/conf.d/efusd: config file for /etc/init.d/efusd
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/efuscore/efus.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/efusd"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/efusd.pid"
+
+# Where to write efusd data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/efusd"
+
+# User and group to own efusd process
+#BITCOIND_USER="efuscore"
+#BITCOIND_GROUP="efuscore"
+
+# Path to efusd executable
+#BITCOIND_BIN="/usr/bin/efusd"
+
+# Nice value to run efusd under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#BITCOIND_OPTS=""
+
+# The timeout in seconds OpenRC will wait for efusd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+BITCOIND_SIGTERM_TIMEOUT=60

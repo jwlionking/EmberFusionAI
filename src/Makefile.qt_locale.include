@@ -1,0 +1,22 @@
+QT_TS = \
+  qt/locale/efus_ar.ts \
+  qt/locale/efus_bg.ts \
+  qt/locale/efus_de.ts \
+  qt/locale/efus_en.ts \
+  qt/locale/efus_es.ts \
+  qt/locale/efus_fi.ts \
+  qt/locale/efus_fr.ts \
+  qt/locale/efus_it.ts \
+  qt/locale/efus_ja.ts \
+  qt/locale/efus_ko.ts \
+  qt/locale/efus_nl.ts \
+  qt/locale/efus_pl.ts \
+  qt/locale/efus_pt.ts \
+  qt/locale/efus_ro.ts \
+  qt/locale/efus_ru.ts \
+  qt/locale/efus_sk.ts \
+  qt/locale/efus_th.ts \
+  qt/locale/efus_tr.ts \
+  qt/locale/efus_vi.ts \
+  qt/locale/efus_zh_CN.ts \
+  qt/locale/efus_zh_TW.ts

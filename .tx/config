@@ -1,0 +1,7 @@
+[main]
+host = https://www.transifex.com
+
+[efus.qt-translation-018x]
+file_filter = src/qt/locale/efus_<lang>.ts
+source_file = src/qt/locale/efus_en.xlf
+source_lang = en

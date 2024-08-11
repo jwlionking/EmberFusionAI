@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=EFUS Core
+Comment=EFUS P2P Cryptocurrency
+Comment[de]=Verbinde mit dem EFUS peer-to-peer Netzwerk
+Comment[fr]=EFUS, monnaie virtuelle cryptographique pair à pair
+Comment[tr]=EFUS, eşten eşe kriptografik sanal para birimi
+Exec=efus-qt %u
+Terminal=false
+Type=Application
+Icon=efus128
+MimeType=x-scheme-handler/efus;
+Categories=Office;Finance;P2P;Network;Qt;
+StartupWMClass=EFUS-qt

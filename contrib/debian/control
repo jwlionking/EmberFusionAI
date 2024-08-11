@@ -1,0 +1,65 @@
+Source: efus
+Section: utils
+Priority: optional
+Maintainer: Holger Schinzel <holger@efus.org>
+Uploaders: Holger Schinzel <holger@efus.org>
+Build-Depends: debhelper,
+ devscripts,
+ automake,
+ libtool,
+ bash-completion,
+ libdb4.8++-dev,
+ pkg-config,
+ libevent-dev,
+ libboost-filesystem1.48-dev | libboost-filesystem-dev (>> 1.47),
+ libboost-thread1.48-dev | libboost-thread-dev (>> 1.47),
+ libboost-test1.48-dev | libboost-test-dev (>> 1.47),
+ libminiupnpc8-dev | libminiupnpc-dev,
+ qt4-qmake, libqt4-dev,
+ qttools5-dev-tools, qttools5-dev,
+ libqrencode-dev,
+ python,
+ libzmq3-dev
+Standards-Version: 3.9.2
+Homepage: https://www.efus.tech/
+Vcs-Git: git://github.com/EFUSTECH/EFUS.git
+Vcs-Browser: https://github.com/EFUSTECH/EFUS
+
+Package: efusd
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: peer-to-peer network based digital currency - daemon
+ EFUS is an experimental new digital currency that enables instant, private
+ payments to anyone, anywhere in the world. EFUS uses peer-to-peer
+ technology to operate with no central authority: managing transactions
+ and issuing money are carried out collectively by the network. EFUS Core
+ is the name of the open source software which enables the use of this currency.
+ .
+ This package provides the daemon, efusd, and the CLI tool
+ efus-cli to interact with the daemon.
+
+Package: efus-qt
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: peer-to-peer network based digital currency - Qt GUI
+ EFUS is an experimental new digital currency that enables instant, private
+ payments to anyone, anywhere in the world. EFUS uses peer-to-peer
+ technology to operate with no central authority: managing transactions
+ and issuing money are carried out collectively by the network. EFUS Core
+ is the name of the open source software which enables the use of this currency.
+ .
+ This package provides EFUS-Qt, a GUI for EFUS based on Qt.
+
+Package: efus-tx
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: peer-to-peer digital currency - standalone transaction tool
+ EFUS is an experimental new digital currency that enables instant, private
+ payments to anyone, anywhere in the world. EFUS uses peer-to-peer
+ technology to operate with no central authority: managing transactions
+ and issuing money are carried out collectively by the network. EFUS Core
+ is the name of the open source software which enables the use of this currency.
+ .
+ This package provides efus-tx, a command-line transaction creation
+ tool which can be used without a efus daemon.  Some means of
+ exchanging minimal transaction data with peers is still required.

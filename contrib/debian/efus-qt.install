@@ -1,0 +1,6 @@
+usr/local/bin/efus-qt usr/bin
+share/pixmaps/efus32.xpm usr/share/pixmaps
+share/pixmaps/efus16.xpm usr/share/pixmaps
+share/pixmaps/efus128.png usr/share/pixmaps
+debian/efus-qt.desktop usr/share/applications
+debian/efus-qt.protocol usr/share/kde4/services/
