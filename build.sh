@@ -47,6 +47,7 @@ packages=(
     "libdb4.8++-dev"
     "libboost-all-dev"
     "libevent-dev"
+    "libboost-filesystem-dev"
 )
 
 # Function to check and install missing packages
@@ -120,8 +121,10 @@ configure_project() {
     # Configure the project with CONFIG_SITE, Boost, and libevent settings
     echo -e "${CYAN}Configuring with Berkeley DB 4.8, Boost, and libevent...${NC}"
     CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure \
-        CPPFLAGS="-I/usr/include/db4.8 -I/usr/include" \
+        CPPFLAGS="-I/usr/include/db4.8 -I/usr/include/boost" \
         LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
+        BOOST_CPPFLAGS="-I/usr/include" \
+        BOOST_LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
         --with-boost=/usr/include \
         --disable-bench \
         --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
