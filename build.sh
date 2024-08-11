@@ -108,8 +108,7 @@ configure_project() {
     sudo apt-get install -y libdb4.8-dev libdb4.8++
 
     # Configure the project with CONFIG_SITE and force use of Berkeley DB 4.8
-    CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure --prefix=/ --disable-bench --disable-tests \
-        BDB_CFLAGS="-I/usr/include" BDB_LIBS="-L/usr/lib -ldb_cxx-4.8" || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
+    CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure --prefix=/ --disable-bench --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
     make -j$(nproc) || { echo -e "${RED}Failed to build the project${NC}"; exit 1; }
     
     echo -e "${GREEN}Build completed successfully for ${YELLOW}$prefix${GREEN}!${NC}"
