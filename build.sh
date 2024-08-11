@@ -105,6 +105,10 @@ configure_project() {
     make -j$(nproc) || { echo -e "${RED}Failed to build dependencies${NC}"; exit 1; }
     cd .. || { echo -e "${RED}Failed to change back to parent directory${NC}"; exit 1; }
 
+    # Run autogen.sh to generate the necessary scripts
+    echo -e "${CYAN}Running autogen.sh...${NC}"
+    ./autogen.sh || { echo -e "${RED}Failed to run autogen.sh${NC}"; exit 1; }
+
     # Add the Bitcoin PPA for Berkeley DB 4.8 and install it
     echo -e "${CYAN}Adding Bitcoin PPA and installing Berkeley DB 4.8...${NC}"
     sudo add-apt-repository -y ppa:bitcoin/bitcoin
