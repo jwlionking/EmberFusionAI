@@ -44,7 +44,7 @@ packages=(
     "mingw-w64-x86-64-dev"
     "libgmp-dev"
     "libdb4.8-dev"
-    "libdb4.8++"
+    "libdb4.8++-dev"
 )
 
 # Function to check and install missing packages
@@ -113,10 +113,17 @@ configure_project() {
     echo -e "${CYAN}Adding Bitcoin PPA and installing Berkeley DB 4.8...${NC}"
     sudo add-apt-repository -y ppa:bitcoin/bitcoin
     sudo apt-get update -y
-    sudo apt-get install -y libdb4.8-dev libdb4.8++
+    sudo apt-get install -y libdb4.8-dev libdb4.8++-dev
 
     # Configure the project with CONFIG_SITE and force use of Berkeley DB 4.8
-    CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure --prefix=/ --disable-bench --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
+    echo -e "${CYAN}Configuring with Berkeley DB 4.8...${NC}"
+    CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure \
+        CPPFLAGS="-I/usr/include/db4.8" \
+        LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
+        --disable-bench \
+        --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
+
+    # Build the project
     make -j$(nproc) || { echo -e "${RED}Failed to build the project${NC}"; exit 1; }
     
     echo -e "${GREEN}Build completed successfully for ${YELLOW}$prefix${GREEN}!${NC}"
