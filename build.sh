@@ -100,7 +100,7 @@ configure_project() {
     # Run the build steps
     echo -e "${CYAN}Building dependencies for ${YELLOW}$prefix${CYAN}...${NC}"
     cd depends || { echo -e "${RED}Failed to change directory to 'depends'${NC}"; exit 1; }
-    make -j$(nproc) || { echo -e "${RED}Failed to build dependencies${NC}"; exit 1; }
+    make -j4 || { echo -e "${RED}Failed to build dependencies${NC}"; exit 1; }
     cd .. || { echo -e "${RED}Failed to change back to parent directory${NC}"; exit 1; }
 
     # Run autogen.sh to generate the necessary scripts
@@ -114,7 +114,7 @@ configure_project() {
         --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
 
     # Build the project
-    make -j$(nproc) || { echo -e "${RED}Failed to build the project${NC}"; exit 1; }
+    make -j4 || { echo -e "${RED}Failed to build the project${NC}"; exit 1; }
     
     echo -e "${GREEN}Build completed successfully for ${YELLOW}$prefix${GREEN}!${NC}"
 }
