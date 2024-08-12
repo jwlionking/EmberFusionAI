@@ -107,7 +107,7 @@ configure_project() {
     echo -e "${CYAN}Running autogen.sh...${NC}"
     ./autogen.sh || { echo -e "${RED}Failed to run autogen.sh${NC}"; exit 1; }
 
-    # Configure the project with CONFIG_SITE, Boost, libevent, and Qt5 settings
+    # Configure the project with CONFIG_SITE
     echo -e "${CYAN}Configuring...${NC}"
     CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure \
         --disable-bench \
