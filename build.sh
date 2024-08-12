@@ -98,7 +98,7 @@ configure_project() {
     esac
 
     # Run the build steps
-    echo -e "${CYAN}Configuring for ${YELLOW}$prefix${CYAN}...${NC}"
+    echo -e "${CYAN}Building dependencies for ${YELLOW}$prefix${CYAN}...${NC}"
     cd depends || { echo -e "${RED}Failed to change directory to 'depends'${NC}"; exit 1; }
     make -j$(nproc) || { echo -e "${RED}Failed to build dependencies${NC}"; exit 1; }
     cd .. || { echo -e "${RED}Failed to change back to parent directory${NC}"; exit 1; }
