@@ -19,47 +19,19 @@ show_header() {
     echo -e "${NC}"
 }
 
-# List of packages to check and install if missing
-packages=(
-    "make"
-    "automake"
-    "curl"
-    "g++-multilib"
-    "libtool"
-    "binutils-gold"
-    "bsdmainutils"
-    "pkg-config"
-    "python3"
-    "patch"
-    "bison"
-    "build-essential"
-    "libtool"
-    "autotools-dev"
-    "automake"
-    "pkg-config"
-    "bsdmainutils"
-    "bison"
-    "curl"
-    "g++-mingw-w64-x86-64"
-    "mingw-w64-x86-64-dev"
-    "libgmp-dev"
-    "libdb4.8-dev"
-    "libdb4.8++-dev"
-    "libboost-all-dev"
-    "libevent-dev"
-    "libboost-filesystem-dev"
-    "qt5-default"
-    "qttools5-dev-tools"
-    "libqt5core5a"
-    "libqt5gui5"
-    "libqt5dbus5"
-    "libqt5network5"
-    "libqt5widgets5"
-    "qttools5-dev"
+# List of common packages to check and install if missing
+common_packages=(
+    build-essential libtool autotools-dev automake pkg-config bsdmainutils curl git python3
+)
+
+# List of Win64-specific packages
+win64_packages=(
+    g++-mingw-w64-x86-64 nsis
 )
 
 # Function to check and install missing packages
 install_if_missing() {
+    local packages=("$@")
     for package in "${packages[@]}"; do
         dpkg -s $package &> /dev/null
 
@@ -93,22 +65,37 @@ configure_project() {
     local prefix=""
 
     case $choice in
-        1) prefix="i686-pc-linux-gnu";;
-        2) prefix="x86_64-pc-linux-gnu";;
+        1) 
+            prefix="i686-pc-linux-gnu"
+            install_if_missing "${common_packages[@]}"
+            ;;
+        2) 
+            prefix="x86_64-pc-linux-gnu"
+            install_if_missing "${common_packages[@]}"
+            ;;
         3) 
             prefix="x86_64-w64-mingw32"
+            install_if_missing "${common_packages[@]}" "${win64_packages[@]}"
             echo 1 | sudo update-alternatives --config x86_64-w64-mingw32-gcc
             echo 1 | sudo update-alternatives --config x86_64-w64-mingw32-g++
             ;;
-        4) prefix="x86_64-apple-darwin19";;
-        5) prefix="arm-linux-gnueabihf";;
-        6) prefix="aarch64-linux-gnu";;
-        7) echo -e "${YELLOW}Exiting...${NC}"; exit 0;;
-        *) echo -e "${RED}Invalid option!${NC}"; exit 1;;
+        4) 
+            prefix="x86_64-apple-darwin19"
+            install_if_missing "${common_packages[@]}"
+            ;;
+        5) 
+            prefix="arm-linux-gnueabihf"
+            install_if_missing "${common_packages[@]}"
+            ;;
+        6) 
+            prefix="aarch64-linux-gnu"
+            install_if_missing "${common_packages[@]}"
+            ;;
+        7) 
+            echo -e "${YELLOW}Exiting...${NC}"; exit 0;;
+        *) 
+            echo -e "${RED}Invalid option!${NC}"; exit 1;;
     esac
-
-    # Install necessary packages after a choice is made
-    install_if_missing
 
     # Run the build steps
     echo -e "${CYAN}Configuring for ${YELLOW}$prefix${CYAN}...${NC}"
@@ -120,20 +107,9 @@ configure_project() {
     echo -e "${CYAN}Running autogen.sh...${NC}"
     ./autogen.sh || { echo -e "${RED}Failed to run autogen.sh${NC}"; exit 1; }
 
-    # Add the Bitcoin PPA for Berkeley DB 4.8 and install it
-    echo -e "${CYAN}Adding Bitcoin PPA and installing Berkeley DB 4.8...${NC}"
-    sudo add-apt-repository -y ppa:bitcoin/bitcoin
-    sudo apt-get update -y
-    sudo apt-get install -y libdb4.8-dev libdb4.8++-dev
-
     # Configure the project with CONFIG_SITE, Boost, libevent, and Qt5 settings
-    echo -e "${CYAN}Configuring with Berkeley DB 4.8, Boost, libevent, and Qt5...${NC}"
+    echo -e "${CYAN}Configuring...${NC}"
     CONFIG_SITE=$PWD/depends/$prefix/share/config.site ./configure \
-        CPPFLAGS="-I/usr/include/db4.8" \
-        LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
-        BOOST_CPPFLAGS="-I/usr/include" \
-        BOOST_LDFLAGS="-L/usr/lib/x86_64-linux-gnu" \
-        --with-boost=/usr \
         --disable-bench \
         --disable-tests || { echo -e "${RED}Failed to configure${NC}"; exit 1; }
 
@@ -152,3 +128,4 @@ read -p "Enter your choice [1-7]: " choice
 
 # Call the function with the user's choice
 configure_project $choice
+
