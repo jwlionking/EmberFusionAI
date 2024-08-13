@@ -12,10 +12,13 @@ NC='\033[0m' # No Color
 # ASCII Art Header for EFUS
 show_header() {
     echo -e "${YELLOW}"
-    echo "┏┓┏┓┳┳┏┓  ┳┓┳┳┳┓ ┳┓  ┳┳┓┏┓┳┓┳┳"
-    echo "┣ ┣ ┃┃┗┓  ┣┫┃┃┃┃ ┃┃  ┃┃┃┣ ┃┃┃┃"
-    echo "┗┛┻ ┗┛┗┛  ┻┛┗┛┻┗┛┻┛  ┛ ┗┗┛┛┗┗┛"
-    echo "                              "
+    echo "┏┓┳┳┓┳┓┏┓┳┓┏┓┳┳┏┓┳┏┓┳┓┏┓┳"
+    echo "┣ ┃┃┃┣┫┣ ┣┫┣ ┃┃┗┓┃┃┃┃┃┣┫┃"
+    echo "┗┛┛ ┗┻┛┗┛┛┗┻ ┗┛┗┛┻┗┛┛┗┛┗┻"
+    echo "┳┓┳┳┳┓ ┳┓  ┳┳┓┏┓┳┓┳┳     "
+    echo "┣┫┃┃┃┃ ┃┃  ┃┃┃┣ ┃┃┃┃     "
+    echo "┻┛┗┛┻┗┛┻┛  ┛ ┗┗┛┛┗┗┛     "
+    echo "                         "
     echo -e "${NC}"
 }
 
@@ -105,6 +108,13 @@ configure_project() {
         *) 
             echo -e "${RED}Invalid option!${NC}"; exit 1;;
     esac
+
+    # Add a carriage return before cleaning previous builds
+    echo ""
+
+    # Run make clean before build steps
+    echo -e "${CYAN}Cleaning previous builds...${NC}"
+    make clean || { echo -e "${RED}Failed to clean build files${NC}"; exit 1; }
 
     # Run the build steps
     echo -e "${CYAN}Building dependencies for ${YELLOW}$prefix${CYAN}...${NC}"
