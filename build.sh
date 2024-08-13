@@ -44,6 +44,11 @@ install_if_missing() {
     done
 }
 
+# Function to install additional dependencies for Linux
+install_linux_dependencies() {
+    sudo apt-get install -y curl build-essential libtool autotools-dev automake pkg-config python3 bsdmainutils bison libsqlite3-dev
+}
+
 # Function to display the menu
 show_menu() {
     echo -e "${CYAN}==============================="
@@ -68,10 +73,12 @@ configure_project() {
         1) 
             prefix="i686-pc-linux-gnu"
             install_if_missing "${common_packages[@]}"
+            install_linux_dependencies
             ;;
         2) 
             prefix="x86_64-pc-linux-gnu"
             install_if_missing "${common_packages[@]}"
+            install_linux_dependencies
             ;;
         3) 
             prefix="x86_64-w64-mingw32"
@@ -86,10 +93,12 @@ configure_project() {
         5) 
             prefix="arm-linux-gnueabihf"
             install_if_missing "${common_packages[@]}"
+            install_linux_dependencies
             ;;
         6) 
             prefix="aarch64-linux-gnu"
             install_if_missing "${common_packages[@]}"
+            install_linux_dependencies
             ;;
         7) 
             echo -e "${YELLOW}Exiting...${NC}"; exit 0;;
@@ -128,4 +137,3 @@ read -p "Enter your choice [1-7]: " choice
 
 # Call the function with the user's choice
 configure_project $choice
-
