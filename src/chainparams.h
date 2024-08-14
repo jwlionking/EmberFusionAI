@@ -136,6 +136,7 @@ protected:
     bool m_is_test_chain;
     bool fAllowMultipleAddressesFromGroup;
     bool fAllowMultiplePorts;
+    bool startNewChain;
     bool m_is_mockable_chain;
     int nLLMQConnectionRetryTimeout;
     CCheckpointData checkpointData;
